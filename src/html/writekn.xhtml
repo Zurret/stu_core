@@ -1,0 +1,55 @@
+<html xmlns:stu="stu">
+<metal:macro metal:use-macro="html/sitemacros.xhtml/sitedefaults">
+	<metal:macro metal:fill-slot="body">
+		<metal:macro metal:use-macro="html/commmacros.xhtml/initial_js" />
+		<metal:macro metal:use-macro="html/sitemacros.xhtml/breadcrumb" />
+		<form action="comm.php" method="post">
+			<input type="hidden" name="WRITE_KN" value="1" />
+			<input type="hidden" name="sstr" tal:attributes="value THIS/getSessionString" />
+			<table class="tcal">
+				<tr>
+					<td>
+						<div id="writekntitle" class="selected" style="float: left; padding: 5px;">Titel
+							(6 bis 80 Zeichen)
+						</div>
+						<br style="clear: both;" />
+						<div id="writekntitleinput" style="clear: both; margin: 5px;">
+							<input type="text" name="title" style="width: 100%;" maxlength="80" />
+						</div>
+						<br style="clear: both;" />
+						<div id="writeknplot" class="selected" style="float: left; width: 300px; padding: 5px;">zu Plot
+							hinzufügen</div>
+						<br style="clear: both;" />
+						<div id="writeknplotselect" style="clear: both; margin: 5px;">
+							<metal:macro metal:use-macro="plotselect" />
+						</div>
+						<metal:macro metal:define-macro="plotselect">
+							<select name="plotid" style="width: 500px;">
+								<option value="0">------------------------------</option>
+								<tal:block tal:repeat="plot ACTIVE_RPG_PLOTS">
+									<option value="runtime" tal:attributes="value plot/getId;"
+										tal:content="structure plot/getTitle"></option>
+								</tal:block>
+							</select>
+						</metal:macro>
+					</td>
+				</tr>
+				<tr>
+					<th>Text</th>
+				</tr>
+				<tr>
+					<td><textarea name="text" style="width: 100%; height: 300px;"></textarea></td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" name="B_WRITE_KN" value="Hinzufügen" />
+						<input value="1" type="checkbox" name="markposting" /> <span>Lesezeichen bei diesem Beitrag
+							setzen</span>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</metal:macro>
+</metal:macro>
+
+</html>

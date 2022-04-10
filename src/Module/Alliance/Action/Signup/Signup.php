@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Alliance\Action\Signup;
+
+use Stu\Component\Alliance\AllianceEnum;
+use Stu\Exception\AccessViolation;
+use Stu\Module\Control\ActionControllerInterface;
+use Stu\Module\Control\GameControllerInterface;
+use Stu\Module\Message\Lib\PrivateMessageSenderInterface;
+use Stu\Orm\Repository\AllianceJobRepositoryInterface;
+use Stu\Orm\Repository\AllianceRepositoryInterface;
+
+final class Signup implements ActionControllerInterface
+{
+    public const ACTION_IDENTIFIER = 'B_SIGNUP_ALLIANCE';
+
+    private SignupRequestInterface $signupRequest;
+
+    private AllianceJobRepositoryInterface $allianceJobRepository;
+
+    private AllianceRepositoryInterface $allianceRepository;
+
+    private PrivateMessageSenderInterface $privateMessageSender;
+
+    public function __construct(
+        SignupRequestInterface $signupRequest,
+        AllianceJobRepositoryInterface $allianceJobRepository,
+        AllianceRepositoryInterface $allianceRepository,
+        PrivateMessageSenderInterface $privateMessageSender
+    ) {
+        $this->signupRequest = $signupRequest;
+        $this->allianceJobRepository = $allianceJobRepository;
+        $this->allianceRepository = $allianceRepository;
+        $this->privateMessageSender = $privateMessageSender;
+    }
+
+    public function handle(GameControllerInterface $game): void
+    {
+        $user = $game->getUser();
+        $userId = $user->getId();
+
+        $alliance = $this->allianceRepository->find($this->signupRequest->getAllianceId());
+        if ($alliance === null) {
+            return;
+        }
+
+        $allianceId = (int) $alliance->getId();
+
+        if (!$user->maySignup($allianceId)) {
+            throw new AccessViolation();
+        }
+        $obj = $this->allianceJobRepository->prototype();
+        $obj->setUser($user);
+        $obj->setType(AllianceEnum::ALLIANCE_JOBS_PENDING);
+        $obj->setAlliance($alliance);
+
+        $this->allianceJobRepository->save($obj);
+
+        $text = sprintf(
+            'Der Siedler %s hat sich für die Allianz beworben',
+            $user->getUserName()
+        );
+
+        $this->privateMessageSender->send($userId, $alliance->getFounder()->getUserId(), $text);
+        if ($alliance->getSuccessor()) {
+            $this->privateMessageSender->send($userId, $alliance->getSuccessor()->getUserId(), $text);
+        }
+
+        $game->addInformation(_('Deine Bewerbung für die Allianz wurde abgeschickt'));
+    }
+
+    public function performSessionCheck(): bool
+    {
+        return true;
+    }
+}

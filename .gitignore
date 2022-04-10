@@ -1,0 +1,15 @@
+data/Makefile
+src/Public/avatare
+*.po~
+docu/de/_build/*
+vendor
+config.json
+config.json.backup
+src/Public/assets
+src/Public/version_*
+backup
+.phpunit.result.cache
+src/api/
+build
+OrmProxy
+src/lang/*/*/*.mo

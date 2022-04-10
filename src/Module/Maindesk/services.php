@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Stu\Module\Maindesk;
+
+use function DI\autowire;
+use Stu\Module\Control\GameController;
+use Stu\Module\Maindesk\Action\FirstColony\FirstColony;
+use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequest;
+use Stu\Module\Maindesk\Action\FirstColony\FirstColonyRequestInterface;
+use Stu\Module\Maindesk\View\Overview\Overview;
+use Stu\Module\Maindesk\View\ShowColonyList\ShowColonyList;
+
+return [
+    FirstColonyRequestInterface::class => autowire(FirstColonyRequest::class),
+    'MAINDESK_ACTIONS'                 => [
+        FirstColony::ACTION_IDENTIFIER => autowire(FirstColony::class),
+    ],
+    'MAINDESK_VIEWS' => [
+        GameController::DEFAULT_VIEW    => autowire(Overview::class),
+        ShowColonyList::VIEW_IDENTIFIER => autowire(ShowColonyList::class),
+    ],
+];

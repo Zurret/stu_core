@@ -1,0 +1,88 @@
+{
+  "db": {
+    "host": "change.me",
+    "port": 3306,
+    "user": "change",
+    "pass": "me",
+    "database": "change_me",
+    "backup_dir": "change/me",
+    "backup_cycle_time": 2592000,
+    "proxy_namespace": "Stu\\Orm\\Proxy"
+  },
+  "mq": {
+    "host": "stu-mq",
+    "port": 5672,
+    "user": "mq",
+    "pass": "mq",
+    "vhost": "/",
+    "debug": {
+      "log_path": "/path/to/log",
+      "log_level": 500
+    }
+  },
+  "cache": {
+    "redis_socket": "/path/to/redis.sock",
+    "redis_host": "localhost",
+    "redis_port": 6379
+  },
+  "debug": {
+    "debug_mode": false,
+    "logfile_path": "/path/to/log",
+    "loglevel": 7
+  },
+  "security": {
+    "validation": {
+      "ip_intel_email_address": "change.me",
+      "ip_intel_validation_propability": 0,
+      "ip_intel_validation_propability_score": 1
+    },
+    "cors_sites": "http://change.me"
+  },
+  "game": {
+    "webroot": "/path/to/webroot",
+    "temp_dir": "/tmp",
+    "base_url": "https://change.me",
+    "version": 1337,
+    "language": "de_DE",
+    "user_avatar_path": "avatare/user/",
+    "alliance_avatar_path": "avatare/alliance/",
+    "invitation": {
+      "tokens_per_user": 2,
+      "ttl": 86400
+    },
+    "registration_enabled": false,
+    "email_sender_address": "some@e.mail",
+    "admins": [
+      101,
+      102
+    ],
+    "admin": {
+      "id": 101,
+      "username": "adminuser",
+      "email": "admin@example.com",
+      "faction": 1
+    },
+    "imprint": {
+      "name": "Max Mustermann",
+      "address": "123 Fake street",
+      "zip": "0815",
+      "city": "Musterhausen",
+      "country": "Mustercountry",
+      "email": "max@example.com"
+    }
+  },
+  "api": {
+    "jwt_secret": "changeme",
+    "jwt_validity_period": 259200
+  },
+  "board": {
+    "base_url": "https://board.change.me"
+  },
+  "wiki": {
+    "base_url": "https://wiki.change.me"
+  },
+  "discord": {
+    "url": "https://chat.change.me"
+  },
+  "partner_banner_path": "sites/"
+}
